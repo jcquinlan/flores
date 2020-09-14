@@ -1,4 +1,4 @@
-import {degreesToRadians, getRandomArbitrary} from '../utils';
+import {degreesToRadians, getRandomArbitrary, delayFn} from '../utils';
 import {Leaf} from './Leaf';
 
 export class Branch {
@@ -10,7 +10,7 @@ export class Branch {
       this.length = this.calculateLength();
       this.branches = this.calculateBranches();
       this.bendMagnitude = this.calculateBendMagnitude();
-      this.depth = previousBranchDepth + 1;
+      this.depth = (previousBranchDepth || 0) + 1;
       this.leaves = this.calculateLeaves();
     }
     
@@ -70,7 +70,8 @@ export class Branch {
         const widthResistance = 5 - this.width; // IMPORTANT: the 5 here should always actually be the max width of tree
         const newRotation = this.rotation + (degreesToRadians(windRotationDelta) * widthResistance);
         const originalToCurrentRotationDelta = Math.abs(this.originalRotation - newRotation);
-        if (originalToCurrentRotationDelta <= 0.08) {
+
+        if (originalToCurrentRotationDelta <= 1 * (5 - this.width) && this.width < 4) {
             this.rotation = newRotation;
         }
 

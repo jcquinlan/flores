@@ -8,4 +8,8 @@ export function getRandomArbitrary(min, max) {
     }
 
     return Math.floor(Math.random() * (max - min) + min);
-  }
+}
+
+export function delayFn(fn, delay = 16) {
+    setTimeout(fn, delay);
+}

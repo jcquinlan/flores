@@ -5,6 +5,7 @@ import {getRandomArbitrary, degreesToRadians} from './utils';
 
 let branchRoot;
 let windTime = 0;
+let previousWindMagnitude = 0;
 
 const drawLeaf = (p5, leaf) => {
   p5.fill('rgba(233, 69, 96, 0.5)');
@@ -94,7 +95,8 @@ export default (props) => {
     };
  
     const draw = (p5) => {
-      const windMagnitude = p5.map(p5.noise(windTime), 0, 1, -1, 1, true);
+      const windMagnitudeNew = p5.map(p5.noise(windTime), 0, 1, -0.5, 0.5);
+      const windMagnitude = windMagnitudeNew - previousWindMagnitude;
 
       p5.clear();
       drawBackground(p5);
@@ -103,6 +105,7 @@ export default (props) => {
       branchRoot.applyWindRotation(windMagnitude);
       drawBranch(p5, branchRoot);
       windTime = windTime + 0.01;
+      previousWindMagnitude = windMagnitudeNew;
     };
  
     return <Sketch setup={setup} draw={draw} />;
